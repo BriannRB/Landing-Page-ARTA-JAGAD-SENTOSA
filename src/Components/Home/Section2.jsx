@@ -1,9 +1,24 @@
-import React from "react";
-import Logo from "../../assets/Logo BCG.png";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Logo from "../../assets/Logo AJS.png";
 import "../../App.css";
-import HeroImage from "../../assets/HeroImage.png";
 
 function Section2() {
+  const navigate = useNavigate();
+  const [sectionData, setSectionData] = useState(null);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/api/home")
+      .then((res) => res.json())
+      .then((data) => {
+        const section2 = data.find((item) => item.id === 2);
+        setSectionData(section2);
+      })
+      .catch((err) => console.error("Fetch Home Section2 Error:", err));
+  }, []);
+
+  if (!sectionData) return <p className="text-center mt-10">Loading Section 2...</p>;
+
   return (
     <div
       id="section-2"
@@ -11,24 +26,25 @@ function Section2() {
       data-aos="fade-up"
     >
       <div className="flex flex-col items-center mx-auto md:mx-20 mb-4 md:mb-0 w-full xl:w-1/2 p-4">
-        <img src={Logo} alt="Logo BCG" className="h-15 w-30 mb-7" />
+        <img src={Logo} alt="Logo AJS" className="h-15 w-30 mb-7" />
         <h2 className="text-center max-w-xl font-semibold text-3xl md:text-4xl lg:text-4xl leading-snug">
-          Bangun Rumah Impian Anda Menjadi Kenyataan
+          {sectionData.title}
         </h2>
         <p className="mt-7 max-w-xl text-center leading-relaxed">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text.
-          Lorem Ipsum has been the industry's standard dummy text.
+          {sectionData.paragraph}
         </p>
-        <button className="flex items-center p-2.5 px-8 mt-7 font-semibold px-6 py-3 border-3 border-teal-500 text-teal-500 rounded-lg hover:bg-teal-500 hover:text-white transition duration-200 ease-in-out hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-700 focus-visible:ring-offset-2 active:scale-95">
-          <a href="/about">Selengkapnya</a>
+        <button
+          onClick={() => navigate("/tentang-kami")}
+          className="flex items-center p-2.5 px-8 mt-7 font-semibold px-6 py-3 border-2 border-[#DEB06B] text-[#DEB06B] rounded-lg hover:bg-[#DEB06B] hover:text-white transition duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DEB06B] focus-visible:ring-offset-2 active:scale-95"
+        >
+          Selengkapnya
         </button>
       </div>
       <div className="flex flex-col justify-center items-center p-4 md:p-4 mx-auto md:mx-20 w-full xl:w-1/2 h-auto overflow-hidden">
         <img
-          src={HeroImage}
-          alt=""
-          className="w-full xl:h-full xl:w-full sm:h-100 sm:w-100"
+          src={sectionData.image}
+          alt="Illustration"
+          className="w-full xl:h-full xl:w-full sm:h-100 sm:w-100 object-cover"
         />
       </div>
     </div>

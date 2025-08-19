@@ -1,10 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
 :root {
-  --primary-color: #23aca2;
-  --secondary-color: #0c6f83;
-  --whatsapp-color: #35cd44;
-  --gradient-color: linear-gradient(90deg, #23aca2, #2c3e50);
+  --primary-color: #DEB06B;
+  --secondary-color: #7A5A32;
+  --whatsapp-color: #2DA239;
+  --gradient-color: linear-gradient(90deg, #DEB06B, #7A5A32);
 }
 
 body {

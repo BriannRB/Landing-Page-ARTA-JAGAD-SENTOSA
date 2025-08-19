@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import LogoBCG from "../../Assets/Logo BCG.png";
+import LogoAJS from "../../Assets/Logo AJS.png";
 
-// Google Maps configuration
 const containerStyle = {
   width: "100%",
   height: "300px",
@@ -10,16 +9,58 @@ const containerStyle = {
 };
 
 const center = {
-  lat: -6.303983,
-  lng: 106.683556,
+  lat: -7.036096, 
+  lng: 107.538695,
 };
 
 function Section1() {
+  const [formData, setFormData] = useState({
+    title: "",
+    namalengkap: "",
+    nomorhp: "",
+    email: "",
+    pesan: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:3001/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Pesan berhasil dikirim!");
+        setFormData({
+          title: "",
+          namalengkap: "",
+          nomorhp: "",
+          email: "",
+          pesan: "",
+        });
+      } else {
+        alert("Gagal mengirim pesan: " + data.message);
+      }
+    } catch (error) {
+      alert("Terjadi kesalahan saat mengirim pesan.");
+      console.error(error);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center py-20 mx-10">
       <img
-        src={LogoBCG}
-        alt="Logo BCG"
+        src={LogoAJS}
+        alt="Logo AJS"
         className="h-16 w-32 mb-7"
         data-aos="fade-up"
       />
@@ -37,20 +78,18 @@ function Section1() {
         <span className="text-primary-color font-semibold">
           sales marketing
         </span>{" "}
-        rumah Bayu Cahaya Gemilang yang selalu siap membantu anda mendapatkan
-        hunian rumah baru di Bumi Cahaya Gemilang.
+        rumah Arta Jagad Sentosa yang selalu siap membantu anda mendapatkan
+        hunian rumah baru di Arta Jagad Sentosa.
       </p>
 
-      {/* Container Form & Lokasi */}
       <div className="flex flex-col lg:flex-row gap-10 lg:gap-20 lg:mt-10 w-full max-w-5xl lg:max-w-6xl">
-        {/* Bagian Lokasi */}
+        {/* Lokasi */}
         <div className="flex flex-col w-full lg:w-1/2">
-          {/* Google Maps */}
           <div
             className="mt-20 w-full h-[250px] md:h-[300px] rounded-lg shadow-md"
             data-aos="fade-up"
           >
-            <LoadScript googleMapsApiKey="AIzaSyDKIHGeWuvvktB4nl0mSGTGZEk0n-RdF6A">
+            <LoadScript googleMapsApiKey="AIzaSyBHKGhc_OQTYgpZ9oJocoqtKoInZ6UGkGM">
               <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={center}
@@ -62,39 +101,55 @@ function Section1() {
           </div>
         </div>
 
-        {/* Bagian Form */}
-        <div className="flex flex-col mt-10 w-full lg:w-1/2">
+        {/* Form */}
+        <form
+          className="flex flex-col mt-10 w-full lg:w-1/2"
+          onSubmit={handleSubmit}
+        >
           <input
             type="text"
+            name="namalengkap"
             placeholder="Nama Lengkap"
+            value={formData.namalengkap}
+            onChange={handleChange}
             className="border border-gray-300 rounded-md p-3 mb-4 w-full"
             data-aos="fade-up"
           />
           <input
             type="text"
+            name="nomorhp"
             placeholder="Nomor Handphone"
+            value={formData.nomorhp}
+            onChange={handleChange}
             className="border border-gray-300 rounded-md p-3 mb-4 w-full"
             data-aos="fade-up"
           />
           <input
             type="email"
+            name="email"
             placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
             className="border border-gray-300 rounded-md p-3 mb-4 w-full"
             data-aos="fade-up"
           />
           <textarea
+            name="pesan"
             placeholder="Pesan anda"
             rows="4"
+            value={formData.pesan}
+            onChange={handleChange}
             className="border border-gray-300 rounded-md p-3 mb-4 w-full"
             data-aos="fade-up"
           ></textarea>
           <button
-            className="bg-teal-500 text-white py-3 px-6 rounded-md font-semibold w-full transition duration-200 ease-in-out hover:bg-teal-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-700 focus-visible:ring-offset-2 active:scale-95"
+            type="submit"
+            className="bg-[#DEB06B] text-white py-3 px-6 rounded-md font-semibold w-full transition duration-200 ease-in-out hover:bg-[#C99A5A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-700 focus-visible:ring-offset-2 active:scale-95"
             data-aos="fade-up"
           >
             Kirim Pesan
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

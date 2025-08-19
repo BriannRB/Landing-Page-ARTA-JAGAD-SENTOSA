@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import Navbar from "./Components/Navbar";
 import "./App.css";
 import Home from "./Pages/Home";
 import About from "./Pages/About";
@@ -7,22 +7,20 @@ import Developer from "./Pages/Developer";
 import Simulasi from "./Pages/Simulasi";
 import Kontak from "./Pages/Kontak";
 import NotFound from "./Pages/NotFound";
-import BumiCiampeaAsih from "./Pages/Cluster/BumiCiampeaAsih";
+import ClusterDetail from "./Pages/Cluster/ClusterDetail";
 
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/tentang-kami" element={<About />} />
         <Route path="/developer" element={<Developer />} />
-        <Route
-          path="/developer/bumi-ciampea-asih"
-          element={<BumiCiampeaAsih />}
-        />
+        <Route path="/developer/:slug" element={<ClusterDetail />} />
         <Route path="/simulasi-kpr" element={<Simulasi />} />
         <Route path="/kontak-kami" element={<Kontak />} />
-        <Route path="/*" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
